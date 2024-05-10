@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% block body %}
+    <div class="container m-auto">
+        <div class="row d-flex justify-content-center align-items-center vh-100">
+            <div class="col col-xl-10">
+                <div class="card rounded-3">
+                    <div class="row g-0">
+                        <div class="col-md-6 col-lg-5 d-none d-md-flex  justify-content-center
+                        align-items-center">
+                            <img src=""
+                                 alt="logo" class="img-fluid"/>
+                        </div>
+                        <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                            <div class="card-body p-4 p-lg-5 text-black">
+                                {{ form_start(resetForm) }}
+                                <h5 class="fw-normal mb-3 pb-3"
+                                    style="letter-spacing: 1px;">{% trans %}Reset your password{% endtrans %}</h5>
+
+                                <div class="mb-4 firstPasswordDiv">
+                                    <div class="form-floating">
+                                        {{ form_widget(resetForm.plainPassword.first) }}
+                                        {{ form_errors(resetForm.plainPassword.first) }}
+                                        {{ form_label(resetForm.plainPassword.first, 'Password') }}
+                                    </div>
+                                    <div class="strength-bar">
+                                        <div class="bar p-1"></div>
+                                    </div>
+                                </div>
+                                <div class="form-floating mb-4">
+                                    {{ form_widget(resetForm.plainPassword.second) }}
+                                    {{ form_errors(resetForm.plainPassword.second) }}
+                                    {{ form_label(resetForm.plainPassword.second, 'Confirm password') }}
+                                </div>
+
+                                <div class="pt-1 mb-4">
+                                    <button class="btn btn-dark btn-lg btn-block"
+                                            type="submit">
+                                            {% trans %}Reset password{% endtrans %}
+                                    </button>
+                                </div>
+
+                                {{ form_end(resetForm) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
