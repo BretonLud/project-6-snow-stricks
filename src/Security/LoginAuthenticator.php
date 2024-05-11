@@ -24,7 +24,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
  */
 class LoginAuthenticator extends AbstractLoginFormAuthenticator
 {
-    private const LOGIN_ROUTE = 'app_login';
+    private const string LOGIN_ROUTE = 'app_login';
     public function __construct(private readonly UrlGeneratorInterface $urlGenerator){}
     
     public function supports(Request $request): bool
