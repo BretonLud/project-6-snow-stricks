@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\PasswordStrength;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -21,24 +23,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotBlank()]
+    #[Assert\NotNull()]
     private ?string $username = "";
 
     /**
      * @var list<string> The user roles
      */
     #[ORM\Column]
+    #[Assert\NotBlank()]
+    #[Assert\NotNull()]
     private array $roles = [];
 
     /**
      * @var string|null The hashed password
      */
     #[ORM\Column]
+    #[Assert\Type('string')]
+    #[Assert\PasswordStrength([
+        'minScore' => PasswordStrength::STRENGTH_STRONG,
+    ])]
+    #[Assert\NotBlank()]
+    #[Assert\NotNull()]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Email()]
+    #[Assert\NotBlank()]
+    #[Assert\NotNull()]
     private ?string $email = "";
 
     #[ORM\Column]
+    #[Assert\Type('bool')]
+    #[Assert\NotNull]
     private bool $isVerified = false;
 
     public function getId(): ?int
