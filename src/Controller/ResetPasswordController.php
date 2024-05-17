@@ -6,7 +6,6 @@ use App\Entity\User;
 use App\Form\PasswordsFormType;
 use App\Form\ResetPasswordRequestFormType;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -29,7 +28,6 @@ class ResetPasswordController extends AbstractController
 
     public function __construct(
         private readonly ResetPasswordHelperInterface $resetPasswordHelper,
-        private readonly EntityManagerInterface       $entityManager,
         private readonly UserRepository               $userRepository,
     ) {
     }
@@ -76,8 +74,6 @@ class ResetPasswordController extends AbstractController
             return $this->redirectToRoute('app_home_index');
         }
         
-        // Generate a fake token if the user does not exist or someone hit this page directly.
-        // This prevents exposing whether or not a user was found with the given email address or not
         if (null === ($resetToken = $this->getTokenObjectFromSession())) {
             $resetToken = $this->resetPasswordHelper->generateFakeResetToken();
         }
@@ -158,7 +154,7 @@ class ResetPasswordController extends AbstractController
      */
     private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer, TranslatorInterface $translator): RedirectResponse
     {
-        $user = $this->entityManager->getRepository(User::class)->findOneBy([
+        $user = $this->userRepository->findOneBy([
             'email' => $emailFormData,
         ]);
 
