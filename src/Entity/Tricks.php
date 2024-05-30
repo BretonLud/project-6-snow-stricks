@@ -9,6 +9,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TricksRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['title'], message: 'Trick already exists.')]
 class Tricks
 {
@@ -20,8 +21,7 @@ class Tricks
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank()]
     #[Assert\NotNull()]
-    #[Assert\Type('string')]
-    private ?string $title = "";
+    private ?string $title = null;
 
     #[ORM\Column]
     #[Assert\NotBlank()]
@@ -35,11 +35,9 @@ class Tricks
     #[Assert\NotBlank()]
     #[Assert\NotNull()]
     #[Assert\Type('string')]
-    private ?string $content = "";
+    private ?string $content = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank()]
-    #[Assert\NotNull()]
     #[Assert\Type('string')]
     private ?string $summary = null;
 
@@ -49,12 +47,20 @@ class Tricks
 
     #[ORM\ManyToOne(inversedBy: 'tricks')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull]
+    #[Assert\NotBlank]
     private ?Group $category = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\Type('string')]
     private ?string $slug = null;
-
+    
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -68,7 +74,6 @@ class Tricks
     public function setTitle(string $title): static
     {
         $this->title = $title;
-        
         $this->updateSlug();
 
         return $this;
@@ -114,11 +119,15 @@ class Tricks
     {
         return $this->summary;
     }
-
-    public function setSummary(string $summary): static
+    
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setSummary(): static
     {
-        $this->summary = $summary;
-
+        if ($this->content) {
+            $this->summary = substr($this->content, 0, 255);
+        }
+        
         return $this;
     }
 
@@ -151,8 +160,6 @@ class Tricks
         return $this->slug;
     }
     
-    #[ORM\PrePersist]
-    #[ORM\PreUpdate]
     public function updateSlug(): void
     {
         $slugger = new AsciiSlugger();
@@ -162,5 +169,11 @@ class Tricks
     public function __toString(): string
     {
         return $this->title;
+    }
+    
+    #[ORM\PreUpdate]
+    public function updateTimestamps(): void
+    {
+        $this->setUpdatedAt(new \DateTimeImmutable());
     }
 }
