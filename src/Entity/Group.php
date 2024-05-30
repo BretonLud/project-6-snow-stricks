@@ -44,6 +44,7 @@ class Group
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
