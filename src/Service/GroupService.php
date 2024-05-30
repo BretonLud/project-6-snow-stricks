@@ -24,7 +24,7 @@ readonly class GroupService
         $this->groupRepository->save($group, $true);
     }
     
-    public function remove(Group $group, true $true)
+    public function remove(Group $group, true $true): void
     {
         $this->groupRepository->remove($group, $true);
     }
