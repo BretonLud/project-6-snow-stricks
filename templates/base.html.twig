@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Snowtricks{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
         {% endblock %}
@@ -11,12 +11,76 @@
         {% block javascripts %}
         {% endblock %}
     </head>
-    <body>
+    <body class="d-flex flex-column align-content-center">
+        <header class="sticky-top">
+            <nav>
+                <div class="navbar navbar-expand-lg bg-white p-3 shadow">
+                    <div class="container-fluid">
+                        <div class="img-fluid w-25">
+                            <a href="/">
+                                <img src="" height="70px"
+                                     alt="logo">
+                            </a>
+                        </div>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon">
+                      <span class="bar bar-1"></span>
+                      <span class="bar bar-2"></span>
+                      <span class="bar bar-3"></span>
+                    </span>
+                        </button>
+                        <div class="collapse navbar-collapse z-3" id="navbarNav">
+                            <ul class="navbar-nav justify-content-around w-100 fw-bold text-center">
+                                {% if app.user %}
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <li class="nav-item mt-lg-auto mb-lg-auto dropdown me-lg-3 mb-3 mt-3">
+                                            <a href="/admin">Administration</a>
+                                        </li>
+                                    {% endif %}
+                                    <li class="nav-item mt-lg-auto mb-lg-auto me-lg-3 mb-3 mt-3">
+                                        <a href="{{ path('app_tricks_index') }}" title="Tricks">Tricks</a>
+                                    </li>
+                                    <li class="nav-item mt-lg-auto mb-lg-auto me-lg-3 mb-3 mt-3">
+                                        <a href="">Mes commentaires</a>
+                                    </li>
+                                    <li class="nav-item mt-lg-auto mb-lg-auto ms-auto me-auto me-lg-0">
+                                        <div class="d-flex justify-content-around flex-column flex-lg-row">
+                                            <a href="" title="profil"
+                                               class="nav-link bg-primary text-white rounded-pill me-lg-2 p-2 mb-3 mb-lg-auto mt-lg-auto">
+                                                <div class="d-flex justify-content-center h-100 align-items-center">
+                                                    <i class="bi bi-person-circle me-3"></i>
+                                                    {{ app.user }}
+                                                </div>
+                                            </a>
+                                            <a href="/logout"
+                                               class="nav-link text-center" title="Déconnexion">
+                                                <i class="bi bi-power text-success" style="font-size: 1.5rem"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                {% else %}
+                                    <li class="nav-item mt-lg-auto mb-lg-auto me-lg-3 mb-3 mt-3">
+                                        <a href="{{ path('app_tricks_index') }}" title="Blogs">Tricks</a>
+                                    </li>
+                                    <li class="nav-item mt-lg-auto mb-lg-auto ms-auto me-auto me-lg-0">
+                                        <div class="d-flex justify-content-around flex-column flex-lg-row">
+                                            <a href="/login"
+                                               class="nav-link text-center" title="Connexion">
+                                                <i class="bi bi-power text-danger" style="font-size: 1.5rem"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
         {% set successFlashes = app.flashes('success') %}
         {% set errorFlashes = app.flashes('error') %}
-        {% if app.user %}
-            Bonjour
-        {% endif %}
+
         {% for message in successFlashes %}
             <div class="flex justify-content-center align-items-center message container mt-3">
                 <div class="alert alert-success">{{ message|trans }}</div>
@@ -27,6 +91,8 @@
                 <div class="alert alert-danger">{{ message|trans }}</div>
             </div>
         {% endfor %}
+        <div class="container d-flex flex-column flex-grow-1">
         {% block body %}{% endblock %}
+        </div>
     </body>
 </html>
