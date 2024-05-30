@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Les tricks' %}
+
+{% block body %}
+    <div class="container mt-3">
+        <a href="{{ path('app_tricks_new') }}"><i class="bi bi-plus-square-fill"></i></a>
+        {% for trick in tricks %}
+            <a href="{{ path('app_tricks_edit', {slug: trick.slug}) }}">edit</a>
+        {% else %}
+            <p>
+                Pas de tricks enregister, soyez le premier à le faire
+                {% if not app.user %}
+                    en créant un tricks <a href="{{ path('app_tricks_new') }}">ici</a>
+                {% else %}
+                    en vous <a href="{{ path('app_login') }}">connectant</a>
+                    ou en vous <a href="{{ path('app_register') }}">enregistrant</a>
+                {% endif %}
+            </p>
+        {% endfor %}
+    </div>
+{% endblock %}
