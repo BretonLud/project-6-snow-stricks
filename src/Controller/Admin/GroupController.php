@@ -69,9 +69,7 @@ class GroupController extends AbstractController
     #[Route('/{slug}', name: 'delete', methods: ['DELETE'])]
     public function delete(Group $group, Request $request) : RedirectResponse
     {
-        $tokenId = 'delete' . $group->getId();
-        
-        if ($this->isCsrfTokenValid($tokenId, $request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete-group-' . $group->getSlug(), $request->get('_token'))) {
             
             $this->groupService->remove($group, true);
             
