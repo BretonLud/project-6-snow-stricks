@@ -3,6 +3,25 @@
 {{ form_row(form.title) }}
 {{ form_row(form.content) }}
 {{ form_row(form.category) }}
+<div {{ stimulus_controller('pictures-collection') }}
+        data-pictures-collection-index-value="{{ form.pictures|length > 0 ? form.pictures|last.vars.name + 1 : 0 }}"
+        data-pictures-collection-prototype-value="{{ form_widget(form.pictures.vars.prototype)|e('html_attr') }}"
+>
+    <ul {{ stimulus_target('pictures-collection', 'collectionContainer') }}>
+
+        {% for picture_form in form.pictures %}
+            <li>
+                {% if picture_form.vars.value.filename %}
+                    <img src="{{ asset('pictures/' ~ picture_form.vars.value.filename) }}" width="150" height="150">
+                {% endif %}
+                {{ form_row(picture_form.file) }}
+                {{ form_row(picture_form.header) }}
+                {{ form_row(picture_form.index, {'value': loop.index0}) }}
+            </li>
+        {% endfor %}
+    </ul>
+    <button type="button" {{ stimulus_action('pictures-collection', 'addCollectionElement') }}>Add a picture</button>
+</div>
 {{ form_rest(form) }}
 <button class="btn btn-primary" type="submit">{{ button_label|default('Register')|trans }}</button>
 {{ form_end(form) }}
