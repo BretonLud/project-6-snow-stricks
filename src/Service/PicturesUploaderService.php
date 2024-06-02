@@ -35,7 +35,7 @@ readonly class PicturesUploaderService
         return $fileName;
     }
     
-    public function getTargetDirectory(): string
+    public function getPicturesDirectory(): string
     {
         return $this->picturesDirectory;
     }
