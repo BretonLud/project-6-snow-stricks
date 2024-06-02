@@ -37,7 +37,7 @@ readonly class PicturesUploaderService
     
     public function getTargetDirectory(): string
     {
-        return $this->targetDirectory;
+        return $this->picturesDirectory;
     }
     
     /**
