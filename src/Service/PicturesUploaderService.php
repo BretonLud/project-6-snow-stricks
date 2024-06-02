@@ -69,7 +69,7 @@ readonly class PicturesUploaderService
             return;
         }
         
-        if ($picture->getFilename() and $edit)
+        if ($picture->getFilename() && $edit)
         {
             $filePath = $this->picturesDirectory .'/'.$picture->getFilename();
             
