@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Tricks;
 use App\Form\TricksType;
+use App\Service\PicturesUploaderService;
 use App\Service\TricksService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,14 +12,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\UX\Turbo\TurboBundle;
 
 #[Route('/tricks', name: 'app_tricks_')]
 class TricksController extends AbstractController
 {
-    public function __construct(private readonly TricksService $tricksService)
-    {
-    }
+    public function __construct(
+        private readonly TricksService $tricksService,
+        private readonly PicturesUploaderService $picturesUploader,
+    )
+    {}
     
     #[Route('/', name: 'index', methods: ['GET'])]
     public function index(): Response
@@ -33,13 +35,14 @@ class TricksController extends AbstractController
      */
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
     #[IsGranted("ROLE_USER")]
-    public function create(Request $request): Response
+    public function create(Request $request): null|Response
     {
         $tricks = new Tricks();
         $form = $this->createForm(TricksType::class, $tricks);
         $form->handleRequest($request);
   
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->picturesUploader->setPictures($tricks, true);
             $tricks->setUser($this->getUser());
             $this->tricksService->save($tricks);
             $this->addFlash('success', 'Tricks saved.');
@@ -62,6 +65,7 @@ class TricksController extends AbstractController
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->picturesUploader->setPictures($tricks, true);
             $this->tricksService->save($tricks);
             $this->addFlash('success', 'Tricks edited.');
             return $this->redirectToRoute('app_tricks_index');
