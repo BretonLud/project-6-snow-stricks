@@ -6,6 +6,7 @@ use App\Entity\Group;
 use App\Entity\Tricks;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,7 +28,15 @@ class TricksType extends AbstractType
             'required' => true,
             'autocomplete' => true,
             'placeholder' => 'Select a group',
-        ]);
+            ])
+            ->add('pictures', CollectionType::class, [
+                'entry_type' => PictureFormType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
+                'by_reference' => false
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
