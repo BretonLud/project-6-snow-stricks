@@ -8,7 +8,7 @@ export default class extends Controller {
         prototype: String,
     }
 
-    addCollectionElement(event)
+    addCollectionElement()
     {
         const item = document.createElement('li');
         item.innerHTML = this.prototypeValue.replace(/__name__/g, this.indexValue);

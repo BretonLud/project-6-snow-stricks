@@ -12,7 +12,7 @@
         {% for picture_form in form.pictures %}
             <li>
                 {% if picture_form.vars.value.filename %}
-                    <img src="{{ asset('pictures/' ~ picture_form.vars.value.filename) }}" width="150" height="150">
+                    <img src="{{ asset('pictures/' ~ picture_form.vars.value.filename) }}" width="150" height="150" alt="{{ picture_form.vars.value.filename }}">
                 {% endif %}
                 {{ form_row(picture_form.file) }}
                 {{ form_row(picture_form.header) }}
