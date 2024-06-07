@@ -10,7 +10,7 @@
         {% else %}
             <p>
                 Pas de tricks enregister, soyez le premier à le faire
-                {% if not app.user %}
+                {% if app.user %}
                     en créant un tricks <a href="{{ path('app_tricks_new') }}">ici</a>
                 {% else %}
                     en vous <a href="{{ path('app_login') }}">connectant</a>
