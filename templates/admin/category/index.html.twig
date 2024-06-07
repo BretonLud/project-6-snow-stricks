@@ -22,26 +22,26 @@
             </tr>
             </thead>
             <tbody>
-            {% for group in groups %}
+            {% for category in categories %}
                 <tr>
                     <td>
-                        {{ group|capitalize }}
+                        {{ category|capitalize }}
                     </td>
 
                     <td>
-                        {{ group.createdAt|date }}
+                        {{ category.createdAt|date }}
                     </td>
                     <td>
                         <div class="d-flex justify-content-end">
-                            <a href="{{ path('app_admin_group_edit', {slug: group.slug}) }}">
+                            <a href="{{ path('app_admin_category_edit', {slug: category.slug}) }}">
                                 <i class="bi bi-pencil-fill p-1"></i>
                             </a>
                             <form method="POST"
-                                  action="{{ path('app_admin_group_delete', {slug: group.slug}) }}"
-                                  onsubmit="return confirm('{% trans %}Are you really sure you want to delete this group?{% endtrans %}')">
+                                  action="{{ path('app_admin_category_delete', {slug: category.slug}) }}"
+                                  onsubmit="return confirm('{% trans %}Are you really sure you want to delete this category?{% endtrans %}')">
                                 <input type="hidden" name="_method" value="DELETE">
-                                <input type="hidden" name="_token" id="csrf_token[{{ group.id }}]"
-                                       value="{{ csrf_token('delete-group-' ~ group.slug) }}">
+                                <input type="hidden" name="_token" id="csrf_token[{{ category.id }}]"
+                                       value="{{ csrf_token('delete-category-' ~ category.slug) }}">
                                 <button type="submit" class="button-no-decoration">
                                     <i class="bi bi-trash-fill text-danger p-1"></i>
                                 </button>
@@ -65,7 +65,7 @@
                 </td>
 
                 <td colspan="2" class="text-end">
-                    <a href="{{ path('app_admin_group_new') }}" class="btn btn-primary">
+                    <a href="{{ path('app_admin_category_new') }}" class="btn btn-primary">
                         {% trans %}Create group{% endtrans %}
                     </a>
                 </td>

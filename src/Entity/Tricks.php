@@ -51,7 +51,7 @@ class Tricks
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull]
     #[Assert\NotBlank]
-    private ?Group $category = null;
+    private ?Category $category = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\Type('string')]
@@ -62,12 +62,19 @@ class Tricks
      */
     #[ORM\OneToMany(targetEntity: Picture::class, mappedBy: 'tricks', cascade: ['persist','remove'], orphanRemoval: true)]
     private Collection $pictures;
+
+    /**
+     * @var Collection<int, Video>
+     */
+    #[ORM\OneToMany(targetEntity: Video::class, mappedBy: 'tricks')]
+    private Collection $videos;
     
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
         $this->pictures = new ArrayCollection();
+        $this->videos = new ArrayCollection();
     }
     
     public function getId(): ?int
@@ -210,6 +217,36 @@ class Tricks
             // set the owning side to null (unless already changed)
             if ($picture->getTricks() === $this) {
                 $picture->setTricks(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Video>
+     */
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
+
+    public function addVideo(Video $video): static
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos->add($video);
+            $video->setTricks($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): static
+    {
+        if ($this->videos->removeElement($video)) {
+            // set the owning side to null (unless already changed)
+            if ($video->getTricks() === $this) {
+                $video->setTricks(null);
             }
         }
 
