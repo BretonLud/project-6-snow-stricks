@@ -22,6 +22,23 @@
     </ul>
     <button type="button" {{ stimulus_action('pictures-collection', 'addCollectionElement') }}>Add a picture</button>
 </div>
+
+<div {{ stimulus_controller('videos-collection') }}
+        data-videos-collection-index-value="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}"
+        data-videos-collection-prototype-value="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}"
+>
+    <ul {{ stimulus_target('videos-collection', 'collectionContainer') }}>
+
+        {% for video_form in form.videos %}
+            <li>
+                <iframe src="{{ video_form.vars.value.embedUrl }}" ></iframe>
+                {{ form_row(video_form.videoHost) }}
+                {{ form_row(video_form.videoId) }}
+            </li>
+        {% endfor %}
+    </ul>
+    <button type="button" {{ stimulus_action('videos-collection', 'addCollectionElement') }}>Add a video</button>
+</div>
 {{ form_rest(form) }}
 <button class="btn btn-primary" type="submit">{{ button_label|default('Register')|trans }}</button>
 {{ form_end(form) }}

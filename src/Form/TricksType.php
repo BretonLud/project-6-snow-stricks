@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Group;
+use App\Entity\Category;
 use App\Entity\Tricks;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -24,13 +24,20 @@ class TricksType extends AbstractType
                 'required' => true,
             ])
             ->add('category', EntityType::class, [
-            'class' => Group::class,
+            'class' => Category::class,
             'required' => true,
             'autocomplete' => true,
             'placeholder' => 'Select a group',
             ])
             ->add('pictures', CollectionType::class, [
                 'entry_type' => PictureFormType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
+                'by_reference' => false
+            ])
+            ->add('videos', CollectionType::class, [
+                'entry_type' => VideoFormType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'label' => false,

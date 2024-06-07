@@ -66,7 +66,7 @@ class Tricks
     /**
      * @var Collection<int, Video>
      */
-    #[ORM\OneToMany(targetEntity: Video::class, mappedBy: 'tricks')]
+    #[ORM\OneToMany(targetEntity: Video::class, mappedBy: 'tricks', cascade: ['persist','remove'], orphanRemoval: true)]
     private Collection $videos;
     
     public function __construct()

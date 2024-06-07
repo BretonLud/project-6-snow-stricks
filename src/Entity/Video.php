@@ -6,6 +6,7 @@ use App\Repository\VideoRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
 class Video
 {
@@ -71,9 +72,23 @@ class Video
     {
         return $this->embedUrl;
     }
-
-    public function setEmbedUrl(string $embedUrl): static
+    
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setEmbedUrl(): static
     {
+        if (!$this->videoHost || !$this->videoId) {
+            // you may want to throw an exception here or handle this case according to your needs
+            return $this;
+        }
+        
+        $embedUrl = match ($this->videoHost) {
+            'youtube' => 'https://www.youtube.com/embed/' . $this->videoId,
+            'vimeo' => 'https://player.vimeo.com/video/' . $this->videoId,
+            'dailymotion' => 'https://www.dailymotion.com/embed/video/' . $this->videoId,
+            default => '',
+        };
+        
         $this->embedUrl = $embedUrl;
 
         return $this;
