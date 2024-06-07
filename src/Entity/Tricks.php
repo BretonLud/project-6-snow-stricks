@@ -159,12 +159,12 @@ class Tricks
         return $this;
     }
 
-    public function getCategory(): ?Group
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function setCategory(?Group $category): static
+    public function setCategory(?Category $category): static
     {
         $this->category = $category;
 

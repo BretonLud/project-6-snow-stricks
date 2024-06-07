@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Entity\Category;
-use App\Entity\Group;
 use App\Repository\CategoryRepository;
 
 readonly class CategoryService
