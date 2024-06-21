@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Création d'un tricks
+{% endblock %}
+
+{% block body %}
+    <div>
+        <h1>{{ block('title') }}</h1>
+        {{ include('tricks/_form.html.twig') }}
+    </div>
+{% endblock %}

@@ -1,0 +1,38 @@
+import { Controller } from '@hotwired/stimulus';
+
+export default class extends Controller {
+    static targets = ["collectionContainer"]
+
+    static values = {
+        index    : Number,
+        prototype: String,
+    }
+
+    addCollectionElement()
+    {
+        const item = document.createElement('li');
+        item.innerHTML = this.prototypeValue.replace(/__name__/g, this.indexValue);
+        this.addTagFormDeleteLink(item);
+        this.collectionContainerTarget.appendChild(item);
+        this.indexValue++;
+    }
+
+    addTagFormDeleteLink(item) {
+        const removeFormButton = document.createElement('button');
+        removeFormButton.innerText = 'Delete this video';
+
+        item.append(removeFormButton);
+
+        removeFormButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            // remove the li for the tag form
+            item.remove();
+        });
+    }
+
+    connect() {
+        this.collectionContainerTarget.querySelectorAll('li').forEach((item) => {
+            this.addTagFormDeleteLink(item);
+        });
+    }
+}

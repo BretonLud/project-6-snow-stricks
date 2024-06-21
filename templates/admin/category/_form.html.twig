@@ -1,0 +1,6 @@
+{{ form_start(form) }}
+{{ form_errors(form) }}
+{{ form_row(form.name) }}
+{{ form_rest(form) }}
+<button class="btn btn-primary" type="submit">{{ button_label|default('Register')|trans }}</button>
+{{ form_end(form) }}

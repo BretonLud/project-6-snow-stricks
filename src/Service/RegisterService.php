@@ -5,13 +5,16 @@ namespace App\Service;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
+use Exception;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
-class RegisterService
+readonly class RegisterService
 {
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
@@ -32,7 +35,7 @@ class RegisterService
                 $form->get('plainPassword')->getData()
             )
         );
-        
+       
         $this->userRepository->save($user, true);
         
         $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
@@ -43,5 +46,22 @@ class RegisterService
                 ->htmlTemplate('registration/confirmation_email.html.twig')
         );
         
+    }
+    
+    public function find(int $id)
+    {
+        return $this->userRepository->find($id);
+    }
+    
+    /**
+     * @throws Exception
+     */
+    public function verifyEmail(Request $request, User $user): void
+    {
+        try {
+            $this->emailVerifier->handleEmailConfirmation($request, $user);
+        } catch (VerifyEmailExceptionInterface $exception) {
+            throw new Exception($exception->getMessage());
+        }
     }
 }
