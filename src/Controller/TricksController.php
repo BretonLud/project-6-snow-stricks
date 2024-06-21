@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Tricks;
+use App\Form\CommentFormType;
 use App\Form\TricksType;
+use App\Service\CommentService;
 use App\Service\PicturesUploaderService;
 use App\Service\TricksService;
 use Exception;
@@ -19,6 +22,7 @@ class TricksController extends AbstractController
     public function __construct(
         private readonly TricksService $tricksService,
         private readonly PicturesUploaderService $picturesUploader,
+        private readonly CommentService $commentService,
     )
     {}
     
@@ -77,11 +81,23 @@ class TricksController extends AbstractController
         ]);
     }
     
-    #[Route] #[Route('/show/{slug}', name: 'show', methods: ['GET'])]
-    public function show(Tricks $tricks): Response
+    #[Route('/show/{slug}', name: 'show', methods: ['GET', 'POST'])]
+    public function show(Tricks $tricks, Request $request): Response
     {
+        $comment = new Comment();
+        $form = $this->createForm(CommentFormType::class, $comment);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setUser($this->getUser());
+            $comment->setTricks($tricks);
+            $this->commentService->save($comment);
+            $this->addFlash('success', 'Comment saved.');
+        }
+        
         return $this->render('tricks/show.html.twig', [
-            'tricks' => $tricks
+            'tricks' => $tricks,
+            'form' => $form
         ]);
     }
 }

@@ -1,10 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
+    {% for comment in tricks.comments %}
+        {{ comment.content }}
+    {% endfor %}
+    {% if app.user %}
+        {{ form_start(form) }}
+        {{ form_row(form.content) }}
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+    {% else %}
+        Pour pouvoir laisser un commentaire merci de vous connecter !
+    {% endif %}
 {% endblock %}
 
 {% block title %}
-
+    {{ tricks }}
 {% endblock %}
-
