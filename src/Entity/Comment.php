@@ -2,14 +2,18 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\DateTrait;
 use App\Repository\CommentRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Comment
 {
+    use DateTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -22,12 +26,6 @@ class Comment
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Tricks $tricks = null;
-
-    #[ORM\Column]
-    private ?DateTimeImmutable $createdAt;
-
-    #[ORM\Column]
-    private ?DateTimeImmutable $updatedAt;
 
     #[ORM\Column(length: 500)]
     #[Assert\NotBlank()]
@@ -67,30 +65,6 @@ class Comment
     public function setTricks(?Tricks $tricks): static
     {
         $this->tricks = $tricks;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(DateTimeImmutable $updatedAt): static
-    {
-        $this->updatedAt = $updatedAt;
 
         return $this;
     }

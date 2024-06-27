@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\DateTrait;
 use App\Repository\TricksRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,6 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity(fields: ['title'], message: 'Trick already exists.')]
 class Tricks
 {
+    use DateTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -24,14 +27,6 @@ class Tricks
     #[Assert\NotBlank()]
     #[Assert\NotNull()]
     private ?string $title = null;
-
-    #[ORM\Column]
-    #[Assert\NotBlank()]
-    #[Assert\NotNull()]
-    private ?\DateTimeImmutable $createdAt = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(length: 2500)]
     #[Assert\NotBlank()]
@@ -102,30 +97,6 @@ class Tricks
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
     public function getContent(): ?string
     {
         return $this->content;
@@ -192,12 +163,6 @@ class Tricks
     public function __toString(): string
     {
         return $this->title;
-    }
-    
-    #[ORM\PreUpdate]
-    public function updateTimestamps(): void
-    {
-        $this->setUpdatedAt(new \DateTimeImmutable());
     }
 
     /**
