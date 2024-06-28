@@ -29,6 +29,7 @@ class VideoFormType extends AbstractType
             ->add('videoId', UrlType::class, [
                 'required' => true,
                 'label' => 'Url video',
+                'default_protocol' => "https"
             ])
         ;
         
