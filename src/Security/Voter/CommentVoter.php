@@ -16,23 +16,21 @@ class CommentVoter extends Voter
     {
     }
     
-    protected function supports($attribute, $subject): bool
+    protected function supports(string $attribute,mixed $subject): bool
     {
         return $attribute == self::EDIT
             && $subject instanceof Comment;
     }
     
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
-        if ($attribute == self::EDIT) {
-            $user = $token->getUser();
-            if (!$user instanceof User) {
-                return false;
-            }
-            
-            return $subject->getUser() == $user || $this->security->isGranted('ROLE_ADMIN');
+        $user = $token->getUser();
+        
+        if (!$user instanceof User) {
+            return false;
         }
         
-        return false;
+        return $subject->getUser() == $user || $this->security->isGranted('ROLE_ADMIN');
+      
     }
 }
