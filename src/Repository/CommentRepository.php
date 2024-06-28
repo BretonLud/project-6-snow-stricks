@@ -29,5 +29,8 @@ class CommentRepository extends ServiceEntityRepository
     public function remove(Comment $comment, bool $flush = false): void
     {
         $this->getEntityManager()->remove($comment);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 }
