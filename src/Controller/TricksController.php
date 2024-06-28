@@ -125,7 +125,7 @@ class TricksController extends AbstractController
     }
     
     #[Route('/show/{slug}/comment/edit/{id}', name: 'editComment', methods: ['GET', 'POST'])]
-    #[IsGranted("COMMENT_EDIT", "comment")]
+    #[IsGranted("COMMENT_ACCESS", "comment")]
     public function editComment(
         #[MapEntity(mapping: ['slug' => 'slug'])]Tricks $tricks,
         #[MapEntity(mapping: ['id' => 'id'])]Comment $comment,
@@ -154,7 +154,7 @@ class TricksController extends AbstractController
     }
     
     #[Route('/show/{slug}/comment/delete/{id}', name: 'deleteComment', methods: ['DELETE'])]
-    #[IsGranted("COMMENT_EDIT", "comment")]
+    #[IsGranted("COMMENT_ACCESS", "comment")]
     public function deleteComment(
         #[MapEntity(mapping: ['slug' => 'slug'])]Tricks $tricks,
         #[MapEntity(mapping: ['id' => 'id'])]Comment $comment,
