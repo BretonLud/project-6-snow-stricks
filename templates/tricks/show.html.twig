@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <section class="comments">
     {% for comment in tricks.comments %}
-        <p>{{ comment.content }}
+        <div>
+            {{ comment.content }}
             {% if is_granted('COMMENT_ACCESS', comment) %}
                 <button data-toggle="modal" data-target="#editCommentModal" data-comment-id="{{ comment.id }}" data-tricks-slug="{{ tricks.slug }}" class="edit-button"><i class="bi-pencil-fill text-primary"></i></button>
                 <form method="POST"
@@ -16,10 +18,23 @@
                     </button>
                 </form>
             {% endif %}
-        </p>
+        </div>
     {% endfor %}
+    </section>
+    <div class="modal" tabindex="-1" id="successModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-success-subtle">
+                <div class="modal-body">
+                    <p>Votre message a bien été édité.</p>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal" tabindex="-1" role="dialog" id="editCommentModal">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Modifier le commentaire</h5>
@@ -43,7 +58,7 @@
                 <i class="bi bi-trash-fill text-danger p-1"></i>
             </button>
         </form>
-        {{ include('comment/_form.html.twig') }}
+        {{ include('comment/_form.html.twig',{ 'button_label': 'Register'} ) }}
     {% else %}
         Pour pouvoir laisser un commentaire merci de vous connecter !
     {% endif %}
@@ -51,8 +66,4 @@
 
 {% block title %}
     {{ tricks }}
-{% endblock %}
-
-{% block importmap %}
-    {{ importmap('comment-edit') }}
 {% endblock %}
