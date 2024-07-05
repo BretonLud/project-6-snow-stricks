@@ -77,12 +77,6 @@ class Picture
     {
         return $this->file;
     }
-    
-    #[ORM\PreUpdate]
-    public function updateTimestamps(): void
-    {
-        $this->setUpdatedAt(new \DateTimeImmutable());
-    }
 
     public function isHeader(): ?bool
     {
