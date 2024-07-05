@@ -9,7 +9,6 @@ use App\Form\TricksType;
 use App\Service\CommentService;
 use App\Service\PicturesUploaderService;
 use App\Service\TricksService;
-use Doctrine\ORM\Mapping\Entity;
 use Exception;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -137,12 +136,20 @@ class TricksController extends AbstractController
         ]);
         
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
             
-            $this->commentService->save($comment);
-            $this->addFlash('success', 'Comment edited.');
-            return $this->redirectToRoute('app_tricks_show', ['slug' => $tricks->getSlug()]);
+            if ($form->isValid())
+            {
+                $this->commentService->save($comment);
+                $this->addFlash('success', 'Comment edited.');
+                return $this->redirectToRoute('app_tricks_show', ['slug' => $tricks->getSlug()]);
+            }
             
+            return new Response($this->renderView('comment/_form.html.twig', [
+                'form' => $form,
+                'tricks' => $tricks,
+                'comment' => $comment,
+                ]), Response::HTTP_BAD_REQUEST);
         }
         
         return $this->render('comment/_form.html.twig', [
@@ -150,7 +157,6 @@ class TricksController extends AbstractController
             'tricks' => $tricks,
             'comment' => $comment
         ]);
-        
     }
     
     #[Route('/show/{slug}/comment/delete/{id}', name: 'deleteComment', methods: ['DELETE'])]
