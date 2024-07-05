@@ -1,5 +1,5 @@
 import './bootstrap.js';
-import * as bootstrap from './vendor/bootstrap/bootstrap.index.js';
+import 'bootstrap/dist/js/bootstrap.min.js';
 import './js/comment-edit.js'
 
 /*
