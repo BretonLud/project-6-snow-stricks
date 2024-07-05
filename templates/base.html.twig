@@ -92,7 +92,7 @@
                 <div class="alert alert-danger">{{ message|trans }}</div>
             </div>
         {% endfor %}
-        <div class="container d-flex flex-column flex-grow-1">
+        <div class="{{ (app.current_route != "app_home_index") ? "container" : "" }} d-flex flex-column flex-grow-1">
         {% block body %}{% endblock %}
         </div>
     </body>
