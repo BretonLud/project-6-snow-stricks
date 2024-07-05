@@ -43,4 +43,16 @@ readonly class TricksService
             throw new Exception($e->getMessage(), $e->getCode());
         }
     }
+    
+    /**
+     * @throws Exception
+     */
+    public function remove(Tricks $tricks): void
+    {
+        try {
+            $this->tricksRepository->remove($tricks, true);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode());
+        }
+    }
 }

@@ -37,11 +37,10 @@ class VideoSubmitEventSubscriber implements EventSubscriberInterface
             return;
         }
         
-        
         switch ($videoHost) {
             case 'youtube':
                 if (!preg_match('~^https?://(?:www\.)?youtube\.com/watch\?v=([\w-]*)~i', $url, $matches)) {
-                    $form['videoId']->addError(new FormError('Invalid YouTube URL'));
+                    $form['videoId']->addError(new FormError('Invalid YouTube URL. The URL should be in the format: https://www.youtube.com/watch?v=[videoId]'));
                     return;
                 }
                 
@@ -49,7 +48,7 @@ class VideoSubmitEventSubscriber implements EventSubscriberInterface
                 break;
             case 'vimeo':
                 if (!preg_match('~^https?://(?:www\.)?vimeo\.com/([\w-/]*)~i', $url, $matches)) {
-                    $form['videoId']->addError(new FormError('Invalid Vimeo URL'));
+                    $form['videoId']->addError(new FormError('Invalid Vimeo URL. The URL should be in the format: https://www.vimeo.com/[videoId]'));
                     return;
                 }
                 
@@ -57,14 +56,14 @@ class VideoSubmitEventSubscriber implements EventSubscriberInterface
                 break;
             case 'dailymotion':
                 if (!preg_match('~^https?://(?:www\.)?dailymotion\.com/video/([\w-]*)~i', $url, $matches)) {
-                    $form['videoId']->addError(new FormError('Invalid Dailymotion URL'));
+                    $form['videoId']->addError(new FormError('Invalid Dailymotion URL. The URL should be in the format: https://www.dailymotion.com/video/[videoId]'));
                     return;
                 }
                 
                 $videoId = $matches[1];
                 break;
             default:
-                $form['videoId']->addError(new FormError('Unsupported video host'));
+                $form['videoId']->addError(new FormError('Unsupported video host. Please use YouTube, Vimeo, or Dailymotion.'));
                 return;
         }
         

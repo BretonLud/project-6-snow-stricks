@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Category;
 use App\Form\CategoryFormType;
 use App\Service\CategoryService;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,7 +51,7 @@ class CategoryController extends AbstractController
     }
     
     #[Route('/edit/{slug}', name: 'edit', methods: ['GET', 'POST'])]
-    public function edit(Category $category, Request $request) : Response
+    public function edit( #[MapEntity(mapping: ['slug' => 'slug'])] Category $category, Request $request) : Response
     {
         $form = $this->createForm(CategoryFormType::class, $category);
         $form->handleRequest($request);
@@ -67,7 +68,7 @@ class CategoryController extends AbstractController
     }
     
     #[Route('/{slug}', name: 'delete', methods: ['DELETE'])]
-    public function delete(Category $category, Request $request) : RedirectResponse
+    public function delete(#[MapEntity(mapping: ['slug' => 'slug'])] Category $category, Request $request) : RedirectResponse
     {
         if ($this->isCsrfTokenValid('delete-category-' . $category->getSlug(), $request->get('_token'))) {
             

@@ -1,4 +1,7 @@
 import './bootstrap.js';
+import 'bootstrap/dist/js/bootstrap.min.js';
+import './js/comment-edit.js'
+
 /*
  * Welcome to your app's main JavaScript file!
  *

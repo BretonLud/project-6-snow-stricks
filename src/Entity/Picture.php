@@ -2,17 +2,19 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\DateTrait;
 use App\Repository\PictureRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[ORM\Entity(repositoryClass: PictureRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['filename'], message: 'Picture already exists.')]
 class Picture
 {
+    use DateTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -21,14 +23,8 @@ class Picture
     #[ORM\ManyToOne(inversedBy: 'pictures')]
     private ?Tricks $tricks = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt;
-
     #[ORM\Column(length: 100)]
     private ?string $filename = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updatedAt;
     
     private ?UploadedFile $file = null;
 
@@ -60,18 +56,6 @@ class Picture
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
     public function getFilename(): ?string
     {
         return $this->filename;
@@ -80,18 +64,6 @@ class Picture
     public function setFilename(string $filename): static
     {
         $this->filename = $filename;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
-    {
-        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -104,12 +76,6 @@ class Picture
     public function getFile(): ?UploadedFile
     {
         return $this->file;
-    }
-    
-    #[ORM\PreUpdate]
-    public function updateTimestamps(): void
-    {
-        $this->setUpdatedAt(new \DateTimeImmutable());
     }
 
     public function isHeader(): ?bool
