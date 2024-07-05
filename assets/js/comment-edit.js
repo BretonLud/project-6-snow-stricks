@@ -1,10 +1,5 @@
 import {Modal} from "../vendor/bootstrap/bootstrap.index.js";
 
-document.addEventListener('turbo:render', () => {
-    attachEditButtonEvents();
-});
-
-
 function attachEditButtonEvents() {
     let editButtons = document.querySelectorAll(".edit-button:not([data-event-attached])");
     editButtons.forEach(button => {
@@ -40,21 +35,43 @@ attachEditButtonEvents();
 function attachFormSubmitListener(form, modal, divModalBody) {
     form.addEventListener('submit', function(e) {
         e.preventDefault();
-        const content = form.querySelector('textarea');
-        console.log(content.value.length)
-        if (content.checkValidity() && content.value && content.value.length < 501) {
-            form.submit();
-        } else {
-            fetch(form.action, {
-                method: form.method,
-                body: new FormData(form)
-            })
-                .then(response => response.text())
-                .then(html => {
-                    divModalBody.innerHTML = html;
-                    const newForm = divModalBody.querySelector('form');
-                    attachFormSubmitListener(newForm, modal, divModalBody);
+
+        fetch(form.action, {
+            method: form.method,
+            body: new FormData(form)
+        })
+            .then(response => {
+
+                if (!response.ok) {
+                    return response.text().then(errorForm => {
+                       updateForm(divModalBody, modal, errorForm);
+                    })
+                }
+
+                return response.text().then(html => {
+                   updateComments(html,modal)
                 });
-        }
+            })
     });
+}
+
+function updateComments(html, modal)
+{
+    const content = document.createElement("html");
+    content.innerHTML = html;
+    const commentsContent = content.querySelector('.comments');
+    const comments = document.querySelector('.comments');
+
+    comments.innerHTML = commentsContent.innerHTML;
+    modal.hide()
+    const successModal = new Modal(document.querySelector('#successModal'));
+    successModal.show();
+    attachEditButtonEvents();
+}
+
+function updateForm(divModalBody,modal, errorForm)
+{
+    divModalBody.innerHTML = errorForm;
+    const newForm = divModalBody.querySelector('form');
+    attachFormSubmitListener(newForm, modal, divModalBody);
 }
