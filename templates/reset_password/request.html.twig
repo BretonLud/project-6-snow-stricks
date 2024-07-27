@@ -9,11 +9,10 @@
     <div class="container m-auto">
         <div class="row d-flex justify-content-center align-items-center">
             <div class="col col-xl-10">
-                <div class="card" style="border-radius: 1rem;">
+                <div class="card rounded-3 card-security" >
                     <div class="row g-0">
                         <div class="col-md-6 col-lg-5 d-none d-md-flex  justify-content-center
                         align-items-center">
-                            <img src="" alt="logo" class="img-fluid"/>
                         </div>
                         <div class="col-md-6 col-lg-7 d-flex align-items-center">
                             <div class="card-body p-4 p-lg-5 text-black">
@@ -23,15 +22,15 @@
                                     <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
                                 </div>
 
-                                <h5 class="fw-normal mb-3 pb-3"
-                                    style="letter-spacing: 1px;">{{ block('title') }}</h5>
+                                <h3 class="fw-normal mb-3 pb-3 text-black"
+                                    style="letter-spacing: 1px;">{{ block('title') }}</h3>
                                 <div class="form-floating">
                                     {{ form_errors(requestForm.email) }}
                                     {{ form_widget(requestForm.email, {'attr' : {'class': 'form-control
                                     form-control-md', 'placeholder' : 'Mail'}}) }}
                                     {{ form_label(requestForm.email,) }}
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-3 mt-3">
                                     <small>
                                         {% trans %}Enter your email address and we will send you a link to reset your password.{% endtrans %}
                                     </small>
