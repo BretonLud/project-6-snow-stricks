@@ -28,7 +28,7 @@ class Tricks
     #[Assert\NotNull()]
     private ?string $title = null;
 
-    #[ORM\Column(length: 2500)]
+    #[ORM\Column(type: "text", length: 10000)]
     #[Assert\NotBlank()]
     #[Assert\NotNull()]
     #[Assert\Type('string')]
