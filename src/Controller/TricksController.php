@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/tricks', name: 'app_tricks_')]
 class TricksController extends AbstractController
@@ -25,14 +26,17 @@ class TricksController extends AbstractController
         private readonly TricksService $tricksService,
         private readonly PicturesUploaderService $picturesUploader,
         private readonly CommentService $commentService,
+        private readonly TranslatorInterface $translator,
     )
     {}
     
     #[Route('/', name: 'index', methods: ['GET'])]
     public function index(): Response
     {
+        $tricks = $this->tricksService->findBy([], ['createdAt' => 'DESC']);
+        
         return $this->render('tricks/index.html.twig', [
-            'tricks' => $this->tricksService->findAll()
+            'tricks' => $tricks
         ]);
     }
     
@@ -51,7 +55,7 @@ class TricksController extends AbstractController
             $this->picturesUploader->setPictures($tricks, true);
             $tricks->setUser($this->getUser());
             $this->tricksService->save($tricks);
-            $this->addFlash('success', 'Tricks saved.');
+            $this->addFlash('success', $this->translator->trans('Tricks saved.'));
             return $this->redirectToRoute('app_tricks_index');
         }
         
@@ -73,8 +77,10 @@ class TricksController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->picturesUploader->setPictures($tricks, true);
             $this->tricksService->save($tricks);
-            $this->addFlash('success', 'Tricks edited.');
-            return $this->redirectToRoute('app_tricks_index');
+            $this->addFlash('success', $this->translator->trans('Tricks edited.'));
+            return $this->redirectToRoute('app_tricks_show', [
+                'slug' => $tricks->getSlug()
+            ]);
         }
         
         return $this->render('tricks/edit.html.twig', [
@@ -84,7 +90,7 @@ class TricksController extends AbstractController
     }
     
     #[Route('/show/{slug}', name: 'show', methods: ['GET', 'POST'])]
-    public function show(#[MapEntity(mapping: ['slug' => 'slug'])] Tricks $tricks, Request $request): Response
+    public function show(#[MapEntity(mapping: ['slug' => 'slug'])] Tricks $trick, Request $request): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentFormType::class, $comment);
@@ -92,14 +98,14 @@ class TricksController extends AbstractController
         
         if ($form->isSubmitted() && $form->isValid()) {
             $comment->setUser($this->getUser());
-            $comment->setTricks($tricks);
+            $comment->setTricks($trick);
             $this->commentService->save($comment);
-            $this->addFlash('success', 'Comment saved.');
-            return $this->redirectToRoute('app_tricks_show', ['slug' => $tricks->getSlug()]);
+            $this->addFlash('success', $this->translator->trans('Comment saved.'));
+            return $this->redirectToRoute('app_tricks_show', ['slug' => $trick->getSlug()]);
         }
         
         return $this->render('tricks/show.html.twig', [
-            'tricks' => $tricks,
+            'trick' => $trick,
             'form' => $form
         ]);
     }
@@ -115,9 +121,9 @@ class TricksController extends AbstractController
             
             $this->tricksService->remove($tricks);
             
-            $this->addFlash('success', 'Tricks deleted');
+            $this->addFlash('success', $this->translator->trans('Tricks deleted'));
         } else {
-            $this->addFlash('error', 'Cannot delete this tricks ');
+            $this->addFlash('error', $this->translator->trans('Cannot delete this tricks '));
         }
         
         return $this->redirectToRoute('app_tricks_index');
@@ -141,7 +147,7 @@ class TricksController extends AbstractController
             if ($form->isValid())
             {
                 $this->commentService->save($comment);
-                $this->addFlash('success', 'Comment edited.');
+                $this->addFlash('success', $this->translator->trans('Comment edited.'));
                 return $this->redirectToRoute('app_tricks_show', ['slug' => $tricks->getSlug()]);
             }
             
@@ -171,9 +177,9 @@ class TricksController extends AbstractController
             
             $this->commentService->remove($comment);
             
-            $this->addFlash('success', 'Comment deleted');
+            $this->addFlash('success', $this->translator->trans('Comment deleted'));
         } else {
-            $this->addFlash('error', 'Cannot delete this comment ');
+            $this->addFlash('error', $this->translator->trans('Cannot delete this comment'));
         }
         
         return $this->redirectToRoute('app_tricks_show', ['slug' => $tricks->getSlug()]);
