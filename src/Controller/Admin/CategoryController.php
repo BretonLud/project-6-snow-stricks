@@ -12,12 +12,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[IsGranted("ROLE_ADMIN")]
 #[Route('/admin/group', name: 'app_admin_category_')]
 class CategoryController extends AbstractController
 {
-    public function __construct(private readonly CategoryService $categoryService)
+    public function __construct(private readonly CategoryService $categoryService, private readonly TranslatorInterface $translator)
     {
     }
     
@@ -40,7 +41,7 @@ class CategoryController extends AbstractController
         
         if ($form->isSubmitted() && $form->isValid()) {
             $this->categoryService->save($category, true);
-            $this->addFlash('success', 'Category created.');
+            $this->addFlash('success', $this->translator->trans('Category created.'));
             return $this->redirectToRoute('app_admin_category_dashboard');
         }
         
@@ -58,7 +59,7 @@ class CategoryController extends AbstractController
         
         if ($form->isSubmitted() && $form->isValid()) {
             $this->categoryService->save($category, true);
-            $this->addFlash('success', 'Category updated.');
+            $this->addFlash('success', $this->translator->trans('Category updated.'));
             return $this->redirectToRoute('app_admin_category_dashboard');
         }
         
@@ -74,9 +75,10 @@ class CategoryController extends AbstractController
             
             $this->categoryService->remove($category, true);
             
-            $this->addFlash('success', 'Category deleted');
+            $this->addFlash('success', $this->translator->trans('Category deleted'));
         } else {
-            $this->addFlash('error', 'Cannot delete this category ' . $category->getName());
+            $message = $this->translator->trans('Cannot delete this category');
+            $this->addFlash('error', $message . ": " . $category->getName());
         }
         
         return $this->redirectToRoute('app_admin_category_dashboard');
