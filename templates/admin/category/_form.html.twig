@@ -1,6 +1,14 @@
-{{ form_start(form) }}
-{{ form_errors(form) }}
-{{ form_row(form.name) }}
-{{ form_rest(form) }}
-<button class="btn btn-primary" type="submit">{{ button_label|default('Register')|trans }}</button>
-{{ form_end(form) }}
+<div class="">
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.name) }}
+    {{ form_rest(form) }}
+    <div class="d-flex justify-content-between">
+        <a href="{{ path('app_admin_category_dashboard') }}" class="btn btn-warning">
+            <i class="bi bi-arrow-return-left"></i>
+        </a>
+        <button class="btn btn-primary" type="submit">{{ button_label|default('Register')|trans }}</button>
+    </div>
+    {{ form_end(form) }}
+</div>
+
