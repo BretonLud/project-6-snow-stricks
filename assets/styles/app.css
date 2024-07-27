@@ -1,9 +1,221 @@
+:root {
+    --bs-dark: #121212;
+    --bs-gray: #282828;
+    --bs-secondary: #333333;
+    --bs-light: #BBBBBB;
+    --bs-primary: #007BFF;
+}
+
 body {
-    background-color: skyblue;
+    background-color: var(--bs-dark);
+    color: var(--bs-light);
     min-height: 100vh;
+}
+
+.card{
+    background-color: var(--bs-secondary);
+}
+
+header{
+    background-color: var(--bs-dark);
+}
+
+h1, h2, h3, h4, h5, h6, p, a, li, span, label, input, .nav-link {
+    color: var(--bs-light); /* Pour le texte général, utilisez un gris clair */
+}
+
+ul li{
+    list-style-type: none;
+}
+
+a.nav-link:hover{
+    color: var(--bs-white);
 }
 
 .toggle-password-button{
     top: 1.25rem !important;
     right: 1.75rem !important;
+}
+
+.home-header{
+    background-image: url("../images/default.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    width: 100%;
+    height: calc(100vh - 84px);
+    @media screen and (max-width: 991px)
+    {
+        background-position: 30% 50%;
+        height: calc(100vh - 72px);
+    }
+}
+
+.bi-arrow-down{
+    font-size: 4rem;
+    position: relative;
+    top: 85%;
+    left: 95%;
+    cursor: pointer;
+    color: var(--bs-dark);
+    @media screen and (max-width: 991px)
+    {
+        left: 80%;
+    }
+}
+
+.bi-arrow-up{
+    font-size: 4rem;
+    cursor: pointer;
+    position: absolute;
+    right: 5%;
+    bottom: 5%;
+    display: none;
+}
+
+.bi-plus-circle-fill{
+    color: var(--bs-light);
+}
+
+.card-security{
+    background-image: url("../images/default.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 0 20%;
+    width: 100%;
+}
+
+.min-height-30{
+    min-height: 30vh !important;
+}
+
+form .form-floating .ts-control input,
+.form-floating.selectAclGroup .ts-control input,
+form .form-floating .ts-control .item,
+.form-floating.selectAclGroup .ts-control .item {
+    margin-top: 1rem !important;
+}
+
+form .form-floating > label{
+    padding-top: 0.5rem !important;
+}
+
+.ck-editor__editable {
+    min-height: 30vh;
+}
+
+.ck-editor__editable h1,
+.ck-editor__editable h2,
+.ck-editor__editable h3,
+.ck-editor__editable h4,
+.ck-editor__editable h5,
+.ck-editor__editable h6,
+.ck-editor__editable p,
+.ck-editor__editable a,
+.ck-editor__editable li,
+.ck-editor__editable ul,
+.ck-editor__editable span{
+    color: black;
+    list-style-type: inherit;
+}
+
+.trick-show-img{
+    height: 50vh;
+    @media screen and (max-width: 991px){
+        height: 30vh;
+    }
+}
+
+.action-button{
+    top: 5%;
+    right: 5%;
+    background-color: rgba(255,255,255,0.5);
+    width: 10%;
+    z-index: 1000;
+}
+
+.div-content{
+    background-color: #a7acb1;
+}
+
+.update .ck.ck-editor__editable_inline {
+    border: 1px solid hsla( 0, 0%, 0%, 0.15 );
+    transition: background .5s ease-out;
+    min-height: 6em;
+    margin-bottom: 1em;
+}
+
+.update__controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.update__chart {
+    margin-right: 1em;
+}
+
+.update__chart__circle {
+    transform: rotate(-90deg);
+    transform-origin: center;
+}
+
+.update__chart__characters {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.update__words {
+    flex-grow: 1;
+    opacity: .5;
+}
+
+.update__limit-close .update__chart__circle {
+    stroke: hsl( 30, 100%, 52% );
+}
+
+.update__limit-exceeded .ck.ck-editor__editable_inline {
+    background: hsl( 0, 100%, 97% );
+}
+
+.update__limit-exceeded .update__chart__circle {
+    stroke: hsl( 0, 100%, 52% );
+}
+
+.update__limit-exceeded .update__chart__characters {
+    fill: hsl( 0, 100%, 52% );
+}
+
+.comment-form-height{
+    min-height: 10vh !important;
+}
+
+.comment-container {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.comment-content {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.comment-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+.comment-actions .edit-button {
+    background: none;
+    border: none;
+    margin-right: 10px;
+}
+
+.comment-actions .button-no-decoration {
+    background: none;
+    border: none;
 }
