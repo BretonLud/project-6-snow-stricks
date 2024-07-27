@@ -1,44 +1,113 @@
 {{ form_start(form) }}
 {{ form_errors(form) }}
-{{ form_row(form.title) }}
-{{ form_row(form.content) }}
-{{ form_row(form.category) }}
-<div {{ stimulus_controller('pictures-collection') }}
-        data-pictures-collection-index-value="{{ form.pictures|length > 0 ? form.pictures|last.vars.name + 1 : 0 }}"
-        data-pictures-collection-prototype-value="{{ form_widget(form.pictures.vars.prototype)|e('html_attr') }}"
->
-    <ul {{ stimulus_target('pictures-collection', 'collectionContainer') }}>
+<section class="row row-cols-lg-2 row-cols-1 mb-3 flex-wrap-reverse flex-lg-wrap">
+    <div class="trick-media col">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h3>Image</h3>
+            </div>
+            <div {{ stimulus_controller('pictures-collection') }}
+                    data-pictures-collection-index-value="{{ form.pictures|length > 0 ? form.pictures|last.vars.name + 1 : 0 }}"
+                    data-pictures-collection-prototype-value="{{ form_widget(form.pictures.vars.prototype)|e('html_attr') }}"
+                    class="card-body"
+            >
+                <ul {{ stimulus_target('pictures-collection', 'collectionContainer') }}>
 
-        {% for picture_form in form.pictures %}
-            <li>
-                {% if picture_form.vars.value.filename %}
-                    <img src="{{ asset('pictures/' ~ picture_form.vars.value.filename) }}" width="150" height="150" alt="{{ picture_form.vars.value.filename }}">
-                {% endif %}
-                {{ form_row(picture_form.file) }}
-                {{ form_row(picture_form.header) }}
-                {{ form_row(picture_form.index, {'value': loop.index0}) }}
-            </li>
-        {% endfor %}
-    </ul>
-    <button type="button" {{ stimulus_action('pictures-collection', 'addCollectionElement') }}>Add a picture</button>
-</div>
+                    {% for picture_form in form.pictures %}
+                        <li class="mb-3">
+                            <h5 class="mb-3">Image {{ loop.index }} :</h5>
+                            {% if picture_form.vars.value.filename %}
+                                <img src="{{ asset('pictures/' ~ picture_form.vars.value.filename) }}" width="150" height="150" alt="{{ picture_form.vars.value.filename }}" class="mb-3">
+                            {% endif %}
+                            {{ form_row(picture_form.file) }}
+                            {{ form_row(picture_form.header) }}
+                            {{ form_row(picture_form.index, {'value': loop.index0}) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="d-flex justify-content-end">
+                    <button type="button" {{ stimulus_action('pictures-collection', 'addCollectionElement') }} class="btn btn-outline-light">Add a picture</button>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3>Video</h3>
+            </div>
+            <div {{ stimulus_controller('videos-collection') }}
+                    data-videos-collection-index-value="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}"
+                    data-videos-collection-prototype-value="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}"
+                    class="card-body"
+            >
+                <ul {{ stimulus_target('videos-collection', 'collectionContainer') }}>
 
-<div {{ stimulus_controller('videos-collection') }}
-        data-videos-collection-index-value="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}"
-        data-videos-collection-prototype-value="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}"
->
-    <ul {{ stimulus_target('videos-collection', 'collectionContainer') }}>
+                    {% for video_form in form.videos %}
+                        <li class="mb-3">
+                            <h5 class="mb-3">Video {{ loop.index }} :</h5>
+                            <iframe src="{{ video_form.vars.value.embedUrl }}" ></iframe>
+                            {{ form_row(video_form.videoHost) }}
+                            {{ form_row(video_form.videoId) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="d-flex justify-content-end">
+                    <button type="button" {{ stimulus_action('videos-collection', 'addCollectionElement') }} class="btn btn-outline-light">Add a video</button>
+                </div>
 
-        {% for video_form in form.videos %}
-            <li>
-                <iframe src="{{ video_form.vars.value.embedUrl }}" ></iframe>
-                {{ form_row(video_form.videoHost) }}
-                {{ form_row(video_form.videoId) }}
-            </li>
-        {% endfor %}
-    </ul>
-    <button type="button" {{ stimulus_action('videos-collection', 'addCollectionElement') }}>Add a video</button>
-</div>
+            </div>
+        </div>
+    </div>
+    <div class="trick-content col mb-3 mb-md-0">
+        <div class="card">
+            <div class="card-header">
+                <div class="row row-cols-lg-2 row-cols-1 mb-3">
+                    <div class="col mb-3 mb-md-0">
+                        {{ form_row(form.title) }}
+                    </div>
+                    <div class="col">
+                        {{ form_row(form.category) }}
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="accordion" id="accordionContent">*
+                    <h2 class="accordion-header">
+                        <button
+                                class="accordion-button"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#content"
+                                aria-controls="content"
+                        >
+                            Description
+                        </button>
+                    </h2>
+                    <div class="accordion-collapse collapse" id="content" aria-labelledby="content" data-bs-parent="#accordionContent">
+                        {{ form_row(form.content) }}
+                        <div class="update mt-3 position-relative p-3" >
+                            <div class="invalid-feedback content-error">
+                            </div>
+                            <div class="update__controls position-absolute top-0 end-0">
+                                <svg class="update__chart" viewbox="0 0 40 40" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+                                    <circle stroke="hsl(0, 0%, 93%)" stroke-width="3" fill="none" cx="20" cy="20" r="17" />
+                                    <circle class="update__chart__circle" stroke="hsl(202, 92%, 59%)" stroke-width="3" stroke-dasharray="134,534" stroke-linecap="round" fill="none" cx="20" cy="20" r="17" />
+                                    <text class="update__chart__characters" x="50%" y="50%" dominant-baseline="central" text-anchor="middle" fill="white"></text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="card mb-5">
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <a href="{{ return_link|default(path('app_tricks_index'))}}" class="btn btn-warning"><i class="bi bi-arrow-return-left"></i></a>
+            <button class="btn btn-outline-light" type="submit">{{ button_label|default('Register')|trans }}</button>
+        </div>
+    </div>
+</section>
 {{ form_rest(form) }}
-<button class="btn btn-primary" type="submit">{{ button_label|default('Register')|trans }}</button>
 {{ form_end(form) }}

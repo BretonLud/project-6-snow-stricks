@@ -1,13 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Modification de {{ tricks }}
+    {{ "Edit"|trans }} {{ tricks }}
 {% endblock %}
 
 {% block body %}
-    <div>
-        <h1>{{ block('title') }}</h1>
-        {{ include('tricks/_form.html.twig', { 'button_label': 'Edit'}) }}
+    <div class="container-lg">
+        <div class="text-center mt-5 mb-5">
+            <h1 class="text-black">{{ block('title') }}</h1>
+        </div>
+        {{ include('tricks/_form.html.twig', { "button_label" : "Edit", "return_link": path('app_tricks_show', {slug: tricks.slug})}) }}
     </div>
 {% endblock %}
 
