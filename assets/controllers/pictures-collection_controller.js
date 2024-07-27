@@ -13,6 +13,8 @@ export default class extends Controller {
         const item = document.createElement('li');
         item.innerHTML = this.prototypeValue.replace(/__name__/g, this.indexValue);
         item.querySelector('#tricks_pictures_' + this.indexValue + '_index').value = this.indexValue;
+        item.classList.add('mb-3');
+        this.itemTitle(item,this.indexValue);
         this.addTagFormDeleteLink(item);
         this.collectionContainerTarget.appendChild(item);
         this.indexValue++;
@@ -21,7 +23,7 @@ export default class extends Controller {
    addTagFormDeleteLink(item) {
         const removeFormButton = document.createElement('button');
         removeFormButton.innerText = 'Delete this picture';
-
+        removeFormButton.classList.add('btn', 'btn-danger');
         item.append(removeFormButton);
 
         removeFormButton.addEventListener('click', (e) => {
@@ -35,5 +37,15 @@ export default class extends Controller {
         this.collectionContainerTarget.querySelectorAll('li').forEach((item) => {
             this.addTagFormDeleteLink(item);
         });
+    }
+
+    itemTitle(item, indexValue)
+    {
+        const title = document.createElement('h5')
+        const index = indexValue + 1
+        title.innerHTML = "Image " + index + " :";
+        title.classList.add('mb-3');
+
+        item.insertAdjacentElement("afterbegin",title);
     }
 }
