@@ -16,6 +16,9 @@ class CommentFormType extends AbstractType
             ->add('content', TextareaType::class, [
                 'required' => true,
                 'label' => 'Message',
+                'attr' => [
+                    'class' => 'comment-form-height'
+                ]
             ])
         ;
     }
