@@ -23,13 +23,21 @@ class VideoFormType extends AbstractType
                     'Dailymotion' => 'dailymotion',
                 ],
                 'required' => true,
-                'autocomplete' => true,
                 'placeholder' => 'Select a video',
+                'row_attr' => [
+                    'class' => 'form-floating mb-3',
+                ]
             ])
             ->add('videoId', UrlType::class, [
                 'required' => true,
                 'label' => 'Url video',
-                'default_protocol' => "https"
+                'default_protocol' => "https",
+                'row_attr' => [
+                    'class' => 'form-floating mb-3',
+                ],
+                'attr' => [
+                    'placeholder' => 'Enter url video',
+                ]
             ])
         ;
         
