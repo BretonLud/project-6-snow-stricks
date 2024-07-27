@@ -38,7 +38,7 @@ class PictureFormType extends AbstractType
                 ->add('header', CheckboxType::class, [
                     'required' => false,
                     'row_attr' => [
-                        'class' => 'form-switch ps-3'
+                        'class' => 'form-switch ps-3 mb-3'
                     ],
                 ])
                 ->add('index', HiddenType::class);
