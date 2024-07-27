@@ -29,6 +29,7 @@ class ResetPasswordController extends AbstractController
     public function __construct(
         private readonly ResetPasswordHelperInterface $resetPasswordHelper,
         private readonly UserRepository               $userRepository,
+        private readonly TranslatorInterface           $translator,
     ) {
     }
     
@@ -49,7 +50,7 @@ class ResetPasswordController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             
-            $this->addFlash('success', "Reset password request successfully sent.");
+            $this->addFlash('success', $this->translator->trans("Reset password request successfully sent."));
             
             return $this->processSendingPasswordResetEmail(
                 $form->get('email')->getData(),
@@ -105,7 +106,7 @@ class ResetPasswordController extends AbstractController
         $token = $this->getTokenFromSession();
 
         if (null === $token) {
-            throw $this->createNotFoundException('No reset password token found in the URL or in the session.');
+            throw $this->createNotFoundException($this->translator->trans('No reset password token found in the URL or in the session.'));
         }
 
         try {
@@ -139,7 +140,7 @@ class ResetPasswordController extends AbstractController
 
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
-            $this->addFlash('success', "Password reset successfully.");
+            $this->addFlash('success', $this->translator->trans("Password reset successfully."));
 
             return $this->redirectToRoute('app_login');
         }
