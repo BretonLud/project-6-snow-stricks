@@ -3,5 +3,24 @@
 {% block title "Accueil" %}
 
 {% block body %}
- Je suis la page d'accueil
+    <section class="home-header position-relative">
+        <i class="bi bi-arrow-down"></i>
+    </section>
+    <section class="tricks mt-5 container-lg">
+        <div class="row row-cols-lg-3 row-cols-1 tricks-content">
+            {{ include('_partials/_tricks.html.twig') }}
+        </div>
+    </section>
+    <section class="d-flex justify-content-center position-relative">
+        {% if tricksLength > 6 %}
+            <button id="loadMoreTricks" data-offset="6" class="btn btn-close-white"><i class="bi bi-plus-circle-fill h1 text-dark"></i></button>
+        {% endif %}
+            <i class="bi bi-arrow-up text-dark"></i>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        const tricksLength = {{ tricksLength }}
+    </script>
 {% endblock %}

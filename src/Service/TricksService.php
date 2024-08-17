@@ -55,4 +55,19 @@ readonly class TricksService
             throw new Exception($e->getMessage(), $e->getCode());
         }
     }
+    
+    public function findByLimit(int $limit, int $offset, array $order = null): array
+    {
+        return $this->tricksRepository->findBy([], $order, $limit, $offset);
+    }
+    
+    public function count(): int
+    {
+        return $this->tricksRepository->count();
+    }
+    
+    public function findBy(array $array, array $order = []): array
+    {
+        return $this->tricksRepository->findBy($array, $order);
+    }
 }

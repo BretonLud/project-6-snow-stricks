@@ -16,7 +16,10 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-    public function __construct(private readonly RegisterService $registerService)
+    public function __construct(
+        private readonly RegisterService $registerService,
+        private readonly TranslatorInterface $translator
+    )
     {
     }
     
@@ -44,7 +47,7 @@ class RegistrationController extends AbstractController
                 return $this->redirectToRoute('app_register');
             }
             
-            $this->addFlash('success', 'Registration successful, please check your email for a verification link.');
+            $this->addFlash('success', $this->translator->trans('Registration successful, please check your email for a verification link.'));
             return $this->redirectToRoute('app_login');
         }
 
@@ -80,7 +83,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
         
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash('success', $this->translator->trans('Your email address has been verified.'));
 
         return $this->redirectToRoute('app_login');
     }

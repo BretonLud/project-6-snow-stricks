@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title 'Gestion des groupes de figures' %}
+{% block title %}
+    {{ "List of categories of figures"|trans }}
+{% endblock %}
 
 {% block body %}
     <div class="container table-responsive p-4">
         <div class="mb-4">
-            <h2 class="text-center">{% trans %}List of groups of figures{% endtrans %}</h2>
+            <h2 class="text-center text-black">{{ block('title') }}</h2>
         </div>
         <table class="table table-hover">
             <thead>
@@ -29,12 +31,12 @@
                     </td>
 
                     <td>
-                        {{ category.createdAt|date }}
+                        {{ category.createdAt|date('d-m-Y à H:i') }}
                     </td>
                     <td>
                         <div class="d-flex justify-content-end">
-                            <a href="{{ path('app_admin_category_edit', {slug: category.slug}) }}">
-                                <i class="bi bi-pencil-fill p-1"></i>
+                            <a href="{{ path('app_admin_category_edit', {slug: category.slug}) }}" class=" btn btn-link">
+                                <i class="bi bi-pencil-fill text-primary"></i>
                             </a>
                             <form method="POST"
                                   action="{{ path('app_admin_category_delete', {slug: category.slug}) }}"
@@ -42,8 +44,8 @@
                                 <input type="hidden" name="_method" value="DELETE">
                                 <input type="hidden" name="_token" id="csrf_token[{{ category.id }}]"
                                        value="{{ csrf_token('delete-category-' ~ category.slug) }}">
-                                <button type="submit" class="button-no-decoration">
-                                    <i class="bi bi-trash-fill text-danger p-1"></i>
+                                <button type="submit" class="btn btn-link">
+                                    <i class="bi bi-trash-fill text-danger"></i>
                                 </button>
                             </form>
                         </div>
@@ -66,7 +68,7 @@
 
                 <td colspan="2" class="text-end">
                     <a href="{{ path('app_admin_category_new') }}" class="btn btn-primary">
-                        {% trans %}Create group{% endtrans %}
+                        {% trans %}Create category{% endtrans %}
                     </a>
                 </td>
             </tr>

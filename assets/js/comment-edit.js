@@ -1,5 +1,9 @@
 import {Modal} from "../vendor/bootstrap/bootstrap.index.js";
 
+window.addEventListener("turbo:render", function() {
+    attachEditButtonEvents();
+})
+
 function attachEditButtonEvents() {
     let editButtons = document.querySelectorAll(".edit-button:not([data-event-attached])");
     editButtons.forEach(button => {
