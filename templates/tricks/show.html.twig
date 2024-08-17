@@ -151,7 +151,11 @@
 										<div class="d-flex align-items-center mb-3">
 											<p class="mb-0 small">
 												{{ comment.createdAt|date('d-m-Y à H:i') }}
+												{% if comment.createdAt != comment.updatedAt %}
+													( {{ comment.updatedAt|date('d-m-Y à H:i') }} )
+												{% endif %}
 											</p>
+											
 											{% if is_granted('COMMENT_ACCESS', comment) %}
 												<div class="comment-actions">
 													<button data-toggle="modal" data-target="#editCommentModal" data-comment-id="{{ comment.id }}"
