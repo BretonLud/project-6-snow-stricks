@@ -12,11 +12,11 @@ body {
     min-height: 100vh;
 }
 
-.card{
+.card {
     background-color: var(--bs-secondary);
 }
 
-header{
+header {
     background-color: var(--bs-dark);
 }
 
@@ -24,47 +24,45 @@ h1, h2, h3, h4, h5, h6, p, a, li, span, label, input, .nav-link {
     color: var(--bs-light); /* Pour le texte général, utilisez un gris clair */
 }
 
-ul li{
+ul li {
     list-style-type: none;
 }
 
-a.nav-link:hover{
+a.nav-link:hover {
     color: var(--bs-white);
 }
 
-.toggle-password-button{
+.toggle-password-button {
     top: 1.25rem !important;
     right: 1.75rem !important;
 }
 
-.home-header{
+.home-header {
     background-image: url("../images/default.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50% 50%;
     width: 100%;
     height: calc(100vh - 84px);
-    @media screen and (max-width: 991px)
-    {
+    @media screen and (max-width: 991px) {
         background-position: 30% 50%;
         height: calc(100vh - 72px);
     }
 }
 
-.bi-arrow-down{
+.bi-arrow-down {
     font-size: 4rem;
     position: relative;
     top: 85%;
     left: 95%;
     cursor: pointer;
     color: var(--bs-dark);
-    @media screen and (max-width: 991px)
-    {
+    @media screen and (max-width: 991px) {
         left: 80%;
     }
 }
 
-.bi-arrow-up{
+.bi-arrow-up {
     font-size: 4rem;
     cursor: pointer;
     position: absolute;
@@ -73,11 +71,11 @@ a.nav-link:hover{
     display: none;
 }
 
-.bi-plus-circle-fill{
+.bi-plus-circle-fill {
     color: var(--bs-light);
 }
 
-.card-security{
+.card-security {
     background-image: url("../images/default.jpg");
     background-size: cover;
     background-repeat: no-repeat;
@@ -85,7 +83,7 @@ a.nav-link:hover{
     width: 100%;
 }
 
-.min-height-30{
+.min-height-30 {
     min-height: 30vh !important;
 }
 
@@ -96,7 +94,7 @@ form .form-floating .ts-control .item,
     margin-top: 1rem !important;
 }
 
-form .form-floating > label{
+form .form-floating > label {
     padding-top: 0.5rem !important;
 }
 
@@ -114,32 +112,35 @@ form .form-floating > label{
 .ck-editor__editable a,
 .ck-editor__editable li,
 .ck-editor__editable ul,
-.ck-editor__editable span{
+.ck-editor__editable span {
     color: black;
     list-style-type: inherit;
 }
 
-.trick-show-img{
+.trick-show-img {
     height: 50vh;
-    @media screen and (max-width: 991px){
+    @media screen and (max-width: 991px) {
         height: 30vh;
     }
 }
 
-.action-button{
-    top: 5%;
+.action-button {
+    top: 1%;
     right: 5%;
-    background-color: rgba(255,255,255,0.5);
-    width: 10%;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 13%;
     z-index: 1000;
+    @media screen and (max-width: 991px) {
+        width: 20%;
+    }
 }
 
-.div-content{
+.div-content {
     background-color: #a7acb1;
 }
 
 .update .ck.ck-editor__editable_inline {
-    border: 1px solid hsla( 0, 0%, 0%, 0.15 );
+    border: 1px solid hsla(0, 0%, 0%, 0.15);
     transition: background .5s ease-out;
     min-height: 6em;
     margin-bottom: 1em;
@@ -171,22 +172,22 @@ form .form-floating > label{
 }
 
 .update__limit-close .update__chart__circle {
-    stroke: hsl( 30, 100%, 52% );
+    stroke: hsl(30, 100%, 52%);
 }
 
 .update__limit-exceeded .ck.ck-editor__editable_inline {
-    background: hsl( 0, 100%, 97% );
+    background: hsl(0, 100%, 97%);
 }
 
 .update__limit-exceeded .update__chart__circle {
-    stroke: hsl( 0, 100%, 52% );
+    stroke: hsl(0, 100%, 52%);
 }
 
 .update__limit-exceeded .update__chart__characters {
-    fill: hsl( 0, 100%, 52% );
+    fill: hsl(0, 100%, 52%);
 }
 
-.comment-form-height{
+.comment-form-height {
     min-height: 10vh !important;
 }
 
