@@ -50,4 +50,16 @@ Insérer les données dans la base de données juste en changeant l'username et 
 docker exec -i snowtricks_database /usr/bin/mariadb -u username --password=password snowtricks < dump.sql
 ```
 
+Vous avez accès site sur l'adresse suivante :
+
+```
+localhost:8888
+```
+
+Vous avez accès a Mailhog à l'adresse suivante :
+
+```
+localhost:8025
+```
+
 Amusez vous ensuite :)
