@@ -29,7 +29,7 @@ services:
       SERVICE_NAME: ${APP_SLUG}_database
       MYSQL_DATABASE: ${MARIADB_DATABASE}
     volumes:
-      - /var/www/project-6-snow-tricks/database:/var/lib/mysql/
+      - /var/www/database:/var/lib/mysql/
       - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
     networks:
       - app_network
