@@ -27,7 +27,7 @@
 					{% endfor %}
 				</ul>
 				<div class="d-flex justify-content-end">
-					<button type="button" {{ stimulus_action('pictures-collection', 'addCollectionElement') }} class="btn btn-outline-light">Add a picture</button>
+					<button type="button" {{ stimulus_action('pictures-collection', 'addCollectionElement') }} class="btn btn-outline-light">{{ "Add a picture"|trans }}</button>
 				</div>
 			</div>
 		</div>
@@ -52,7 +52,7 @@
 					{% endfor %}
 				</ul>
 				<div class="d-flex justify-content-end">
-					<button type="button" {{ stimulus_action('videos-collection', 'addCollectionElement') }} class="btn btn-outline-light">Add a video</button>
+					<button type="button" {{ stimulus_action('videos-collection', 'addCollectionElement') }} class="btn btn-outline-light">{{ "Add a video"|trans }}</button>
 				</div>
 			
 			</div>
