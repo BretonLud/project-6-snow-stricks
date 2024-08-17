@@ -3,27 +3,27 @@
 {% block title 'Les tricks' %}
 
 {% block body %}
-    <div class="container mt-3">
-        {% if app.user %}
-            <div class="d-flex justify-content-center mb-5">
-                <a href="{{ path('app_tricks_new') }}"><i class="bi bi-plus-circle-fill h1 text-dark" title="{{ "Create one tricks" }}"></i></a>
-            </div>
-        {% endif %}
-
-        {% if tricks is not empty %}
-            <div class="row-cols-1 row row-cols-lg-3">
-                {{ include('_partials/_tricks.html.twig') }}
-            </div>
-        {% else %}
-            <p>
-                {{ 'No tricks recorded, be the first to do it'|trans }}
-                {% if app.user %}
-                    {{ 'by creating a trick'|trans }} <a href="{{ path('app_tricks_new') }}">{{ 'here'|trans }}</a>
-                {% else %}
-                    {{ 'by'|trans }} <a href="{{ path('app_login') }}">{{ 'logging in'|trans }}</a>
-                    {{ 'or'|trans }} <a href="{{ path('app_register') }}">{{ 'registering'|trans }}</a>
-                {% endif %}
-            </p>
-        {% endif %}
-    </div>
+	<div class="container mt-3">
+		{% if app.user %}
+			<div class="d-flex justify-content-center mb-5">
+				<a href="{{ path('app_tricks_new') }}"><i class="bi bi-plus-circle-fill h1 text-dark" title="{{ "Create one tricks" }}"></i></a>
+			</div>
+		{% endif %}
+		
+		{% if tricks is not empty %}
+			<div class="row-cols-1 row row-cols-lg-3">
+				{{ include('_partials/_tricks.html.twig') }}
+			</div>
+		{% else %}
+			<p class="text-black">
+				{{ 'No tricks recorded, be the first to do it'|trans }}
+				{% if app.user %}
+					{{ 'by creating a trick'|trans }} <a href="{{ path('app_tricks_new') }}" class="text-black">{{ 'here'|trans }}</a>
+				{% else %}
+					{{ 'by'|trans }} <a href="{{ path('app_login') }}" class="text-black">{{ 'logging in'|trans }}</a>
+					{{ 'or'|trans }} <a href="{{ path('app_register') }}" class="text-black">{{ 'registering'|trans }}</a>
+				{% endif %}
+			</p>
+		{% endif %}
+	</div>
 {% endblock %}
