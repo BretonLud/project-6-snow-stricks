@@ -25,17 +25,17 @@
 							{% if not isHeaderFound %}
 								<img src="{{ asset('images/default.jpg') }}" alt="default figure" width="100%" class="rounded-top-2">
 							{% endif %}
+							{% if index > 1 %}
+								<button class="carousel-control-prev" type="button" data-bs-target="#{{ trick.slug }}" data-bs-slide="prev">
+									<span class="carousel-control-prev-icon  bg-black" aria-hidden="true"></span>
+									<span class="visually-hidden">Previous</span>
+								</button>
+								<button class="carousel-control-next" type="button" data-bs-target="#{{ trick.slug }}" data-bs-slide="next">
+									<span class="carousel-control-next-icon bg-black" aria-hidden="true"></span>
+									<span class="visually-hidden">Next</span>
+								</button>
+							{% endif %}
 						</div>
-						{% if index > 1 %}
-							<button class="carousel-control-prev" type="button" data-bs-target="#{{ trick.slug }}" data-bs-slide="prev">
-								<span class="carousel-control-prev-icon  bg-black" aria-hidden="true"></span>
-								<span class="visually-hidden">Previous</span>
-							</button>
-							<button class="carousel-control-next" type="button" data-bs-target="#{{ trick.slug }}" data-bs-slide="next">
-								<span class="carousel-control-next-icon bg-black" aria-hidden="true"></span>
-								<span class="visually-hidden">Next</span>
-							</button>
-						{% endif %}
 					</div>
 					{% if app.user %}
 						<div class="position-absolute action-button d-flex justify-content-evenly">
@@ -93,14 +93,29 @@
 							</div>
 							<div class="col">
 								{% set indexVideo = 0 %}
-								<div id="video" class="carousel slide rounded-top-2">
-									<div class="carousel-inner rounded-top-2">
-										{% for key, video in trick.videos %}
-											<div class="carousel-item {{ (key == 0) ? "active" }}">
-												<iframe src="{{ video.embedUrl }}" height="200px" width="100%"></iframe>
+								<div class="position-relative">
+									<div class="d-flex justify-content-center">
+										<div id="video" class="carousel slide rounded-top-2 w-75">
+											<div class="carousel-inner rounded-top-2">
+												{% for key, video in trick.videos %}
+													<div class="carousel-item {{ (key == 0) ? "active" }}">
+														<iframe src="{{ video.embedUrl }}" height="200px" width="100%" allowfullscreen></iframe>
+													</div>
+													{% set indexVideo = indexVideo + 1 %}
+												{% endfor %}
 											</div>
-										{% endfor %}
+										</div>
 									</div>
+									{% if indexVideo > 1 %}
+										<button class="carousel-control-prev" type="button" data-bs-target="#video" data-bs-slide="prev">
+											<span class="carousel-control-prev-icon  bg-black position-absolute" aria-hidden="true"></span>
+											<span class="visually-hidden">Previous</span>
+										</button>
+										<button class="carousel-control-next" type="button" data-bs-target="#video" data-bs-slide="next">
+											<span class="carousel-control-next-icon bg-black " aria-hidden="true"></span>
+											<span class="visually-hidden">Next</span>
+										</button>
+									{% endif %}
 								</div>
 							</div>
 						</div>
@@ -125,46 +140,55 @@
 					<div class="card-header">
 						<h4 class="mb-0">{{ "Recent comments"|trans }}</h4>
 					</div>
-					{% for comment in trick.comments|sort((a, b) => a.createdAt <=> b.createdAt)|reverse %}
-						<div class="card-body p-4">
-							<div class="d-flex flex-start">
-								<div>
-									<h6 class="fw-bold mb-1">{{ comment.user }}</h6>
-									<div class="d-flex align-items-center mb-3">
-										<p class="mb-0 small">
-											{{ comment.createdAt|date('d-m-Y à H:i') }}
+					{% if comments.comments is defined %}
+						{% for comment in comments.comments %}
+							<div class="card-body p-4">
+								<div class="d-flex flex-start">
+									<div>
+										<h6 class="fw-bold mb-1">{{ comment.user }}</h6>
+										<div class="d-flex align-items-center mb-3">
+											<p class="mb-0 small">
+												{{ comment.createdAt|date('d-m-Y à H:i') }}
+											</p>
+											{% if is_granted('COMMENT_ACCESS', comment) %}
+												<div class="comment-actions">
+													<button data-toggle="modal" data-target="#editCommentModal" data-comment-id="{{ comment.id }}"
+															data-tricks-slug="{{ trick.slug }}"
+															class="edit-button"><i class="bi-pencil-fill text-primary"></i></button>
+													<form method="POST"
+														  action="{{ path('app_tricks_deleteComment', {id: comment.id, slug: trick.slug}) }}"
+														  onsubmit="return confirm('{% trans %}Are you really sure you want to delete this comment?{% endtrans %}')">
+														<input type="hidden" name="_method" value="DELETE">
+														<input type="hidden" name="_token" id="csrf_token[{{ comment.id }}]"
+															   value="{{ csrf_token('delete-comment-' ~ comment.id) }}">
+														<button type="submit" class="button-no-decoration">
+															<i class="bi bi-trash-fill text-danger p-1"></i>
+														</button>
+													</form>
+												</div>
+											{% endif %}
+										</div>
+										<p class="mb-0">
+											{{ comment.content }}
 										</p>
-										{% if is_granted('COMMENT_ACCESS', comment) %}
-											<div class="comment-actions">
-												<button data-toggle="modal" data-target="#editCommentModal" data-comment-id="{{ comment.id }}" data-tricks-slug="{{ trick.slug }}"
-														class="edit-button"><i class="bi-pencil-fill text-primary"></i></button>
-												<form method="POST"
-													  action="{{ path('app_tricks_deleteComment', {id: comment.id, slug: trick.slug}) }}"
-													  onsubmit="return confirm('{% trans %}Are you really sure you want to delete this comment?{% endtrans %}')">
-													<input type="hidden" name="_method" value="DELETE">
-													<input type="hidden" name="_token" id="csrf_token[{{ comment.id }}]"
-														   value="{{ csrf_token('delete-comment-' ~ comment.id) }}">
-													<button type="submit" class="button-no-decoration">
-														<i class="bi bi-trash-fill text-danger p-1"></i>
-													</button>
-												</form>
-											</div>
-										{% endif %}
 									</div>
-									<p class="mb-0">
-										{{ comment.content }}
-									</p>
 								</div>
 							</div>
-						</div>
-						<hr class="my-0 text-white">
+							<hr class="my-0 text-white">
+						{% endfor %}
 					{% else %}
 						<div>
 							<p class="p-2">
 								{{ "No comments yet, be the first to leave one."|trans }}
 							</p>
 						</div>
-					{% endfor %}
+					{% endif %}
+					{% if comments.comments is  defined %}
+						{% set pages = comments.pages %}
+						{% set currentPage = comments.page %}
+						
+						{% include "_partials/_pagination.html.twig" %}
+					{% endif %}
 				</div>
 			</div>
 		</div>
