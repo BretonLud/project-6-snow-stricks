@@ -67,30 +67,32 @@
 								<p>{{ trick.comments|length }} {{ "comments"|trans }}</p>
 							</div>
 						</div>
-						<div class="row row-cols-lg-2 row-cols-1">
-							<div class="col mb-3">
-								{% set indexNoHeaderPictures = 0 %}
-								<div id="no-header-pictures" class="carousel slide rounded-top-2">
-									<div class="carousel-inner rounded-top-2">
-										{% for key, picture in noHeaderPictures %}
-											<div class="carousel-item {{ (key == 0) ? "active" }}">
-												<img class="d-block w-100 rounded-2" height="200px" src="{{ asset('pictures/' ~ picture.filename) }}" alt="{{ key }} slide">
-											</div>
-											{% set indexNoHeaderPictures = indexNoHeaderPictures + 1 %}
-										{% endfor %}
+						<div class="row {{ (noHeaderPictures) ? 'row-cols-lg-2 ' : 'row-cols-lg-1' }} row-cols-1">
+							{% if noHeaderPictures %}
+								<div class="col mb-3">
+									{% set indexNoHeaderPictures = 0 %}
+									<div id="no-header-pictures" class="carousel slide rounded-top-2">
+										<div class="carousel-inner rounded-top-2">
+											{% for key, picture in noHeaderPictures %}
+												<div class="carousel-item {{ (key == 0) ? "active" }}">
+													<img class="d-block w-100 rounded-2" height="200px" src="{{ asset('pictures/' ~ picture.filename) }}" alt="{{ key }} slide">
+												</div>
+												{% set indexNoHeaderPictures = indexNoHeaderPictures + 1 %}
+											{% endfor %}
+										</div>
+										{% if indexNoHeaderPictures > 1 %}
+											<button class="carousel-control-prev" type="button" data-bs-target="#no-header-pictures" data-bs-slide="prev">
+												<span class="carousel-control-prev-icon  bg-black" aria-hidden="true"></span>
+												<span class="visually-hidden">Previous</span>
+											</button>
+											<button class="carousel-control-next" type="button" data-bs-target="#no-header-pictures" data-bs-slide="next">
+												<span class="carousel-control-next-icon bg-black" aria-hidden="true"></span>
+												<span class="visually-hidden">Next</span>
+											</button>
+										{% endif %}
 									</div>
-									{% if indexNoHeaderPictures > 1 %}
-										<button class="carousel-control-prev" type="button" data-bs-target="#no-header-pictures" data-bs-slide="prev">
-											<span class="carousel-control-prev-icon  bg-black" aria-hidden="true"></span>
-											<span class="visually-hidden">Previous</span>
-										</button>
-										<button class="carousel-control-next" type="button" data-bs-target="#no-header-pictures" data-bs-slide="next">
-											<span class="carousel-control-next-icon bg-black" aria-hidden="true"></span>
-											<span class="visually-hidden">Next</span>
-										</button>
-									{% endif %}
 								</div>
-							</div>
+							{% endif %}
 							<div class="col">
 								{% set indexVideo = 0 %}
 								<div class="position-relative">
