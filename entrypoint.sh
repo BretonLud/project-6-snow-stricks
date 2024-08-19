@@ -5,5 +5,10 @@ while true; do
   sleep 5s
 done
 
+php bin/console cache:clear
+chown -R www-data:www-data /var/www/var
+chown www-data:www-data /var/www/public/pictures
+php bin/console asset-map:compile
+
 # Une fois la migration réussie, démarrez php-fpm
 php-fpm
