@@ -1,6 +1,6 @@
 {% if pages > 1 %}
 	{% set path = app.current_route %}
-	<ul class="pagination">
+	<ul class="pagination justify-content-center mt-3">
 		{% if currentPage > 1 %}
 			<li class="page-item">
 				<a href="{{ path(path, {slug: trick.slug, page: currentPage - 1}) }}"
